@@ -1,0 +1,122 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "resume-analyzer",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -544,
+        0
+      ],
+      "id": "52c198b8-fc84-498a-b17f-059b8888401d",
+      "name": "Webhook",
+      "webhookId": "ea9db49b-dd58-4f9f-ac1a-ce72db634d57"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -288,
+        0
+      ],
+      "id": "859d8967-91ab-4cd0-a4f3-6dcdf5e0c960",
+      "name": "When chat message received",
+      "webhookId": "4528378a-8736-4d8d-aa5d-7adc63022559"
+    },
+    {
+      "parameters": {
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an AI resume analyzer. Your job is to analyze resumes and extract useful information."
+            },
+            {
+              "message": "You are an AI resume analyzer. Extract the following from the resume: 1. Skills 2. Experience level 3. Suggested job role 4. Short summary"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        48,
+        0
+      ],
+      "id": "231d50a9-0a45-4b1d-88b2-d325f8ccb289",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "llama-3.1-8b-instant",
+          "mode": "list",
+          "cachedResultName": "llama-3.1-8b-instant"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        48
+      ],
+      "id": "82c2c960-0157-4375-bec8-80a32b8590cd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "dm5eeWSGPOLYJKK9",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c2c4dfc3-6875-4825-89e2-87359993a6ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "305b2a433567c48f8c5b1aacfed6bcfdba32dfacb59ff2e5f2644b176f91b30c"
+  },
+  "id": "zQgXjezBZBrB0AQp",
+  "tags": []
+}
